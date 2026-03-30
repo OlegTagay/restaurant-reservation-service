@@ -1,7 +1,6 @@
 package com.reservio.restaurant.service;
 
-import com.reservio.restaurant.dto.request.contactInfo.CreateContactInfoRequest;
-import com.reservio.restaurant.dto.request.contactInfo.UpdateContactInfoRequest;
+import com.reservio.restaurant.dto.request.contactInfo.ContactInfoRequest;
 import com.reservio.restaurant.dto.response.contactInfo.ContactInfoResponse;
 import com.reservio.restaurant.entity.ContactInfo;
 import com.reservio.restaurant.mapper.ContactInfoMapper;
@@ -23,9 +22,9 @@ public class ContactInfoService implements IContactInfoService {
     }
 
     @Transactional
-    public ContactInfoResponse createContactInfo(CreateContactInfoRequest createContactInfoRequest) {
-        log.info("Creating entity: {}", createContactInfoRequest);
-        ContactInfo contactInfo = contactInfoMapper.toEntity(createContactInfoRequest);
+    public ContactInfoResponse createContactInfo(ContactInfoRequest request) {
+        log.info("Creating entity: {}", request);
+        ContactInfo contactInfo = contactInfoMapper.toEntity(request);
         contactInfoRepository.save(contactInfo);
 
         return contactInfoMapper.toResponse(contactInfo);
@@ -39,15 +38,15 @@ public class ContactInfoService implements IContactInfoService {
     }
 
     @Transactional
-    public ContactInfoResponse updateContactInfo(Long id, UpdateContactInfoRequest updateContactInfoRequest) {
-        log.info("Updating entity: {}", updateContactInfoRequest);
+    public ContactInfoResponse updateContactInfo(Long id, ContactInfoRequest request) {
+        log.info("Updating entity: {}", request);
         ContactInfo contactInfo = getContactInfo(id);
 
-        if (updateContactInfoRequest.address() != null) {
-            contactInfo.setAddress(updateContactInfoRequest.address());
+        if (request.address() != null) {
+            contactInfo.setAddress(request.address());
         }
-        if (updateContactInfoRequest.phoneNumber() != null) {
-            contactInfo.setPhoneNumber(updateContactInfoRequest.phoneNumber());
+        if (request.phoneNumber() != null) {
+            contactInfo.setPhoneNumber(request.phoneNumber());
         }
 
         contactInfoRepository.save(contactInfo);

@@ -1,6 +1,6 @@
 package com.reservio.restaurant;
 
-import com.reservio.restaurant.dto.request.contactInfo.CreateContactInfoRequest;
+import com.reservio.restaurant.dto.request.contactInfo.ContactInfoRequest;
 import com.reservio.restaurant.dto.response.contactInfo.ContactInfoResponse;
 import com.reservio.restaurant.entity.ContactInfo;
 import com.reservio.restaurant.mapper.ContactInfoMapper;
@@ -25,7 +25,7 @@ public class ContactInfoServiceTests {
 
     @Test
     void createContactInfo() {
-        CreateContactInfoRequest request = new CreateContactInfoRequest("123456789", "address");
+        ContactInfoRequest request = new ContactInfoRequest("123456789", "address");
         ContactInfo entity = new ContactInfo();
         ContactInfoResponse expectedResponse = new ContactInfoResponse(1L, "123456789", "address");
 

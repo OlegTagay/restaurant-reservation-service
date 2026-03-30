@@ -9,6 +9,4 @@ import org.springframework.stereotype.Service;
 public class ReservationTableService {
     private ReservationTableRepository reservationTableRepository;
     private  UserInfoRepository userInfoRepository;
-
-
 }
