@@ -4,7 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 public record CreateContactInfoRequest(
-        @NotBlank(message = "Phone number is required") String phoneNumber,
+        @NotBlank(message = "Phone number is required")
+        String phoneNumber,
         String address
 ) {
 }

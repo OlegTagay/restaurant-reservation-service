@@ -6,12 +6,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Data
-public class UserInfoRequest {
-    @NotBlank(message = "First name is required")
-    private String firstName;
-    @NotBlank(message = "Last name is required")
-    private String lastName;
-    @NotNull
-    private CreateContactInfoRequest createContactInfoRequest;
+public record UserInfoRequest(
+        @NotBlank(message = "First name is required") String firstName,
+        @NotBlank(message = "Last name is required") String lastName,
+        @NotNull CreateContactInfoRequest createContactInfoRequest
+) {
 }

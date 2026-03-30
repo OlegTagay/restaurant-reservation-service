@@ -10,16 +10,16 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Data
-public class ReservationTableRequest {
-    @Min(value = 2, message = "Minimum seat number is 2")
-    @Max(value = 26, message = "Maximum seat number is 25")
-    private Integer numberOfSeats;
-    private Boolean isAvailable;
-    @FutureOrPresent
-    private LocalDate reservationDate;
-    @FutureOrPresent
-    private LocalTime reservationTime;
-    @NotNull
-    private UserInfoRequest user;
+public record ReservationTableRequest(
+        @Min(value = 2, message = "Minimum seat number is 2")
+        @Max(value = 26, message = "Maximum seat number is 25")
+        Integer numberOfSeats,
+        Boolean isAvailable,
+        @FutureOrPresent
+        LocalDate reservationDate,
+        @FutureOrPresent
+        LocalTime reservationTime,
+        @NotNull
+        UserInfoRequest user
+) {
 }

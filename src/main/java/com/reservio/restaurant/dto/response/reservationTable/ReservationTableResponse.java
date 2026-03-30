@@ -6,11 +6,11 @@ import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Data
-public class ReservationTableResponse {
-    private Integer numberOfSeats;
-    private Boolean isAvailable;
-    private LocalDate reservationDate;
-    private LocalTime reservationTime;
-    private UserInfoResponse user;
+public record ReservationTableResponse(
+        Integer numberOfSeats,
+        Boolean isAvailable,
+        LocalDate reservationDate,
+        LocalTime reservationTime,
+        UserInfoResponse user
+) {
 }
