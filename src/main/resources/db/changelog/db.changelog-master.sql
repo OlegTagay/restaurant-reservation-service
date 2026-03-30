@@ -1,0 +1,3 @@
+--liquibase formatted sql
+--include file:001-create-tables.sql
+--include file:002-alter-tables.sql

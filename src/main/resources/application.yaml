@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: restaurant-reservation-service
+  datasource:
+    url: jdbc:postgresql://localhost:5434/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.sql
