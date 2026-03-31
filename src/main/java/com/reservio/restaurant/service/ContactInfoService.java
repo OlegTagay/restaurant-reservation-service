@@ -42,13 +42,7 @@ public class ContactInfoService implements IContactInfoService {
         log.info("Updating entity: {}", request);
         ContactInfo contactInfo = getContactInfo(id);
 
-        if (request.address() != null) {
-            contactInfo.setAddress(request.address());
-        }
-        if (request.phoneNumber() != null) {
-            contactInfo.setPhoneNumber(request.phoneNumber());
-        }
-
+        contactInfoMapper.updateEntity(request, contactInfo);
         contactInfoRepository.save(contactInfo);
 
         return contactInfoMapper.toResponse(contactInfo);

@@ -20,6 +20,6 @@ public record ReservationTableRequest(
         @FutureOrPresent
         LocalTime reservationTime,
         @NotNull
-        UserInfoRequest user
+        UserInfoRequest userInfoRequest
 ) {
 }

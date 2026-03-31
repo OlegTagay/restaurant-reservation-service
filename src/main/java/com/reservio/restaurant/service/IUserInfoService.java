@@ -7,7 +7,7 @@ import com.reservio.restaurant.dto.response.userInfo.UserInfoResponse;
 
 public interface IUserInfoService {
     UserInfoResponse createUserInfo(UserInfoRequest request);
-    UserInfoResponse readTable(Long id);
-    UserInfoResponse updateTable(Long id, UserInfoRequest request);
-    UserInfoResponse deleteTable(Long id);
+    UserInfoResponse readUserInfo(Long id);
+    UserInfoResponse updateUserInfo(Long id, UserInfoRequest request);
+    void deleteUserInfo(Long id);
 }

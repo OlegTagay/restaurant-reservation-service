@@ -5,6 +5,7 @@ import com.reservio.restaurant.dto.response.userInfo.UserInfoResponse;
 import com.reservio.restaurant.entity.UserInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = ContactInfoMapper.class)
 public interface UserInfoMapper {
@@ -13,4 +14,7 @@ public interface UserInfoMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "contactInfo", source = "contactInfoRequest")
     UserInfo toEntity(UserInfoRequest request);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contactInfo", source = "contactInfoRequest")
+    void updateEntity(UserInfoRequest request, @MappingTarget UserInfo entity);
 }
