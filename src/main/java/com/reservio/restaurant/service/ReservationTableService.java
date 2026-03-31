@@ -35,7 +35,6 @@ public class ReservationTableService implements IReservationTableService {
     }
 
     @Override
-    public ReservationTableResponse deleteTable(Long id) {
-        return null;
+    public void deleteTable(Long id) {
     }
 }

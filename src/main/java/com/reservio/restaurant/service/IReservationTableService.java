@@ -7,5 +7,5 @@ public interface IReservationTableService {
     ReservationTableResponse createTable(ReservationTableRequest request);
     ReservationTableResponse readTable(Long id);
     ReservationTableResponse updateTable(Long id, ReservationTableRequest request);
-    ReservationTableResponse deleteTable(Long id);
+    void deleteTable(Long id);
 }
