@@ -25,41 +25,55 @@ public class ContactInfoServiceTests {
     @InjectMocks
     ContactInfoService contactInfoService;
 
+    private final Long id = 1L;
+    private final ContactInfo contactInfo = new ContactInfo(1L, "123456789", "address");
+    private final ContactInfoRequest request = new ContactInfoRequest("123456789", "address");
+    private final ContactInfoResponse expectedResponse = new ContactInfoResponse(1L, "123456789", "address");
+
     @Test
     void createContactInfo() {
-        ContactInfoRequest request = new ContactInfoRequest("123456789", "address");
-        ContactInfo entity = new ContactInfo();
-        ContactInfoResponse expectedResponse = new ContactInfoResponse(1L, "123456789", "address");
-
-        Mockito.when(contactInfoMapper.toEntity(request)).thenReturn(entity);
-        Mockito.when(contactInfoRepository.save(entity)).thenReturn(entity);
-        Mockito.when(contactInfoMapper.toResponse(entity)).thenReturn(expectedResponse);
+        Mockito.when(contactInfoMapper.toEntity(request)).thenReturn(contactInfo);
+        Mockito.when(contactInfoRepository.save(contactInfo)).thenReturn(contactInfo);
+        Mockito.when(contactInfoMapper.toResponse(contactInfo)).thenReturn(expectedResponse);
 
         ContactInfoResponse response = contactInfoService.createContactInfo(request);
 
         Assertions.assertNotNull(response);
-        Assertions.assertNotNull(response.id());
-        Assertions.assertEquals(request.address(), response.address());
-        Assertions.assertEquals(request.phoneNumber(), response.phoneNumber());
-        Mockito.verify(contactInfoRepository).save(entity);
+        Assertions.assertEquals(expectedResponse.id(), response.id());
+        Mockito.verify(contactInfoRepository).save(contactInfo);
     }
-
 
     @Test
     void readContactInfo() {
-        ContactInfoRequest request = new ContactInfoRequest("123456789", "address");
-        ContactInfo entity = new ContactInfo();
-        ContactInfoResponse expectedResponse = new ContactInfoResponse(1L, "123456789", "address");
+        Mockito.when(contactInfoRepository.findById(id)).thenReturn(Optional.of(contactInfo));
+        Mockito.when(contactInfoMapper.toResponse(contactInfo)).thenReturn(expectedResponse);
 
-        Mockito.when(contactInfoRepository.findById(1L)).thenReturn(Optional.of(entity));
-        Mockito.when(contactInfoMapper.toResponse(entity)).thenReturn(expectedResponse);
-
-        ContactInfoResponse response = contactInfoService.readContactInfo(1L);
+        ContactInfoResponse response = contactInfoService.readContactInfo(id);
 
         Assertions.assertNotNull(response);
-        Assertions.assertNotNull(response.id());
-        Assertions.assertEquals(request.address(), response.address());
-        Assertions.assertEquals(request.phoneNumber(), response.phoneNumber());
-        Mockito.verify(contactInfoRepository).findById(1L);
+        Assertions.assertEquals(expectedResponse.id(), response.id());
+        Mockito.verify(contactInfoRepository).findById(id);
+    }
+
+    @Test
+    void updateContactInfo() {
+        Mockito.when(contactInfoRepository.findById(id)).thenReturn(Optional.of(contactInfo));
+        Mockito.when(contactInfoRepository.save(contactInfo)).thenReturn(contactInfo);
+        Mockito.when(contactInfoMapper.toResponse(contactInfo)).thenReturn(expectedResponse);
+
+        ContactInfoResponse response = contactInfoService.updateContactInfo(id, request);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(expectedResponse.id(), response.id());
+        Mockito.verify(contactInfoRepository).save(contactInfo);
+    }
+
+    @Test
+    void deleteContactInfo() {
+        Mockito.when(contactInfoRepository.findById(id)).thenReturn(Optional.of(contactInfo));
+
+        contactInfoService.deleteContactInfo(id);
+
+        Mockito.verify(contactInfoRepository).deleteById(id);
     }
 }

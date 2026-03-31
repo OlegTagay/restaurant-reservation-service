@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class ContactInfo {
     @Id
     @GeneratedValue
