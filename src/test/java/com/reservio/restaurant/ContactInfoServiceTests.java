@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 @ExtendWith(MockitoExtension.class)
 public class ContactInfoServiceTests {
     @Mock
@@ -40,5 +42,24 @@ public class ContactInfoServiceTests {
         Assertions.assertEquals(request.address(), response.address());
         Assertions.assertEquals(request.phoneNumber(), response.phoneNumber());
         Mockito.verify(contactInfoRepository).save(entity);
+    }
+
+
+    @Test
+    void readContactInfo() {
+        ContactInfoRequest request = new ContactInfoRequest("123456789", "address");
+        ContactInfo entity = new ContactInfo();
+        ContactInfoResponse expectedResponse = new ContactInfoResponse(1L, "123456789", "address");
+
+        Mockito.when(contactInfoRepository.findById(1L)).thenReturn(Optional.of(entity));
+        Mockito.when(contactInfoMapper.toResponse(entity)).thenReturn(expectedResponse);
+
+        ContactInfoResponse response = contactInfoService.readContactInfo(1L);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.id());
+        Assertions.assertEquals(request.address(), response.address());
+        Assertions.assertEquals(request.phoneNumber(), response.phoneNumber());
+        Mockito.verify(contactInfoRepository).findById(1L);
     }
 }
