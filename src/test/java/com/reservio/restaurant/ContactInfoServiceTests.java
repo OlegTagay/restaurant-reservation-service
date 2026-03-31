@@ -5,7 +5,7 @@ import com.reservio.restaurant.dto.response.contactInfo.ContactInfoResponse;
 import com.reservio.restaurant.entity.ContactInfo;
 import com.reservio.restaurant.mapper.ContactInfoMapper;
 import com.reservio.restaurant.repository.ContactInfoRepository;
-import com.reservio.restaurant.service.ContactInfoService;
+import com.reservio.restaurant.service.contactInfo.ContactInfoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

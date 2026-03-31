@@ -1,13 +1,19 @@
 package com.reservio.restaurant;
 
 import com.reservio.restaurant.dto.request.contactInfo.ContactInfoRequest;
+import com.reservio.restaurant.dto.request.reservationTable.ReservationTableRequest;
 import com.reservio.restaurant.dto.request.userInfo.UserInfoRequest;
 import com.reservio.restaurant.dto.response.contactInfo.ContactInfoResponse;
+import com.reservio.restaurant.dto.response.reservationTable.ReservationTableResponse;
 import com.reservio.restaurant.dto.response.userInfo.UserInfoResponse;
 import com.reservio.restaurant.entity.ContactInfo;
+import com.reservio.restaurant.entity.ReservationTable;
 import com.reservio.restaurant.entity.UserInfo;
+import com.reservio.restaurant.mapper.ReservationTableMapper;
 import com.reservio.restaurant.mapper.UserInfoMapper;
+import com.reservio.restaurant.repository.ReservationTableRepository;
 import com.reservio.restaurant.repository.UserInfoRepository;
+import com.reservio.restaurant.service.reservationTable.ReservationTableService;
 import com.reservio.restaurant.service.userInfo.UserInfoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,24 +23,33 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class UserInfoServiceTests {
+public class ReservationTableServiceTests {
     @Mock
-    UserInfoRepository repository;
+    ReservationTableRepository repository;
     @Mock
-    UserInfoMapper mapper;
+    ReservationTableMapper mapper;
     @InjectMocks
-    UserInfoService service;
+    ReservationTableService service;
 
     private final Long id = 1L;
-    private final UserInfoRequest request = new UserInfoRequest("John", "Doe",
-            new ContactInfoRequest("123456789", "address"));
-    private final UserInfo entity = new UserInfo(id, "John", "Doe",
-            new ContactInfo(id, "123456789", "address"));
-    private final UserInfoResponse expectedResponse = new UserInfoResponse(id, "John", "Doe",
-            new ContactInfoResponse(id, "123456789", "address"));
+    private final Integer numberOfSeats = 2;
+    private final ReservationTableRequest request =
+            new ReservationTableRequest(numberOfSeats, false, LocalDate.now(), LocalTime.now(),
+                    new UserInfoRequest("John", "Doe",
+                            new ContactInfoRequest("123456789", "address")));
+    private final ReservationTable entity =
+            new ReservationTable(id, numberOfSeats, false, LocalDate.now(), LocalTime.now(),
+                    new UserInfo(id, "John", "Doe",
+                            new ContactInfo(id, "123456789", "address")));
+    private final ReservationTableResponse expectedResponse =
+            new ReservationTableResponse(id, numberOfSeats, false, LocalDate.now(), LocalTime.now(),
+                    new UserInfoResponse(id, "John", "Doe",
+                            new ContactInfoResponse(id, "123456789", "address")));
 
     @Test
     void createUserInfo() {
@@ -42,7 +57,7 @@ public class UserInfoServiceTests {
         Mockito.when(repository.save(entity)).thenReturn(entity);
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        UserInfoResponse response = service.createUserInfo(request);
+        ReservationTableResponse response = service.createTable(request);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
@@ -54,7 +69,7 @@ public class UserInfoServiceTests {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        UserInfoResponse response = service.readUserInfo(id);
+        ReservationTableResponse response = service.readTable(id);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
@@ -67,7 +82,7 @@ public class UserInfoServiceTests {
         Mockito.when(repository.save(entity)).thenReturn(entity);
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        UserInfoResponse response = service.updateUserInfo(id, request);
+        ReservationTableResponse response = service.updateTable(id, request);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
@@ -78,7 +93,7 @@ public class UserInfoServiceTests {
     void deleteContactInfo() {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
 
-        service.deleteUserInfo(id);
+        service.deleteTable(id);
 
         Mockito.verify(repository).deleteById(id);
     }

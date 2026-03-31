@@ -1,8 +1,6 @@
-package com.reservio.restaurant.service;
+package com.reservio.restaurant.service.userInfo;
 
-import com.reservio.restaurant.dto.request.reservationTable.ReservationTableRequest;
 import com.reservio.restaurant.dto.request.userInfo.UserInfoRequest;
-import com.reservio.restaurant.dto.response.reservationTable.ReservationTableResponse;
 import com.reservio.restaurant.dto.response.userInfo.UserInfoResponse;
 
 public interface IUserInfoService {

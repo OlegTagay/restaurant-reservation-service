@@ -1,12 +1,9 @@
-package com.reservio.restaurant.service;
+package com.reservio.restaurant.service.userInfo;
 
 import com.reservio.restaurant.dto.request.userInfo.UserInfoRequest;
 import com.reservio.restaurant.dto.response.userInfo.UserInfoResponse;
-import com.reservio.restaurant.entity.ContactInfo;
 import com.reservio.restaurant.entity.UserInfo;
-import com.reservio.restaurant.mapper.ContactInfoMapper;
 import com.reservio.restaurant.mapper.UserInfoMapper;
-import com.reservio.restaurant.mapper.UserInfoMapperImpl;
 import com.reservio.restaurant.repository.UserInfoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;

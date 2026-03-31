@@ -10,6 +10,8 @@ import java.time.LocalTime;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReservationTable {
     @Id
     @GeneratedValue

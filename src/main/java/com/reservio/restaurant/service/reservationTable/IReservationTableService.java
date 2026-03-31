@@ -1,4 +1,4 @@
-package com.reservio.restaurant.service;
+package com.reservio.restaurant.service.reservationTable;
 
 import com.reservio.restaurant.dto.request.reservationTable.ReservationTableRequest;
 import com.reservio.restaurant.dto.response.reservationTable.ReservationTableResponse;

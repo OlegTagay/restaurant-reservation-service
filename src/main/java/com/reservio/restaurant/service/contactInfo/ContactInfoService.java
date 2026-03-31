@@ -1,4 +1,4 @@
-package com.reservio.restaurant.service;
+package com.reservio.restaurant.service.contactInfo;
 
 import com.reservio.restaurant.dto.request.contactInfo.ContactInfoRequest;
 import com.reservio.restaurant.dto.response.contactInfo.ContactInfoResponse;
