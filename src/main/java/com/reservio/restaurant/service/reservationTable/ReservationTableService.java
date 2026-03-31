@@ -25,7 +25,7 @@ public class ReservationTableService implements IReservationTableService {
 
     @Transactional
     @Override
-    public ReservationTableResponse createTable(ReservationTableRequest request) {
+    public ReservationTableResponse createReservationTable(ReservationTableRequest request) {
         log.info("Creating entity: {}", request);
         ReservationTable reservationTable = reservationTableMapper.toEntity(request);
         reservationTableRepository.save(reservationTable);
@@ -35,7 +35,7 @@ public class ReservationTableService implements IReservationTableService {
 
     @Transactional(readOnly = true)
     @Override
-    public ReservationTableResponse readTable(Long id) {
+    public ReservationTableResponse readReservationTable(Long id) {
         log.info("Reading entity id: {}", id);
         ReservationTable reservationTable = getReservationTable(id);
 
@@ -44,7 +44,7 @@ public class ReservationTableService implements IReservationTableService {
 
     @Transactional
     @Override
-    public ReservationTableResponse updateTable(Long id, ReservationTableRequest request) {
+    public ReservationTableResponse updateReservationTable(Long id, ReservationTableRequest request) {
         log.info("Updating entity: {}", request);
         ReservationTable reservationTable = getReservationTable(id);
 
@@ -56,7 +56,7 @@ public class ReservationTableService implements IReservationTableService {
 
     @Transactional
     @Override
-    public void deleteTable(Long id) {
+    public void deleteReservationTable(Long id) {
         log.info("Deleting entity id: {}", id);
         getReservationTable(id);
 

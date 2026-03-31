@@ -9,6 +9,7 @@ import com.reservio.restaurant.entity.UserInfo;
 import com.reservio.restaurant.mapper.UserInfoMapper;
 import com.reservio.restaurant.repository.UserInfoRepository;
 import com.reservio.restaurant.service.userInfo.UserInfoService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class UserInfoServiceTests {
@@ -71,6 +74,7 @@ public class UserInfoServiceTests {
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
+        Mockito.verify(mapper).updateEntity(request, entity);
         Mockito.verify(repository).save(entity);
     }
 
@@ -81,5 +85,29 @@ public class UserInfoServiceTests {
         service.deleteUserInfo(id);
 
         Mockito.verify(repository).deleteById(id);
+    }
+
+    @Test
+    void getUserInfo_shouldThrowEntityNotFoundException_whenNotFound() {
+        Long id = 99L;
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.readUserInfo(id));
+    }
+
+    @Test
+    void updateUserInfo_shouldThrowEntityNotFoundException_whenNotFound() {
+        Long id = 99L;
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.updateUserInfo(id, request));
+    }
+
+    @Test
+    void deleteUserInfo_shouldThrowEntityNotFoundException_whenNotFound() {
+        Long id = 99L;
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.deleteUserInfo(id));
     }
 }

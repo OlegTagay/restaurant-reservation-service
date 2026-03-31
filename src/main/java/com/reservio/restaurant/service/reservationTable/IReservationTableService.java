@@ -4,8 +4,8 @@ import com.reservio.restaurant.dto.request.reservationTable.ReservationTableRequ
 import com.reservio.restaurant.dto.response.reservationTable.ReservationTableResponse;
 
 public interface IReservationTableService {
-    ReservationTableResponse createTable(ReservationTableRequest request);
-    ReservationTableResponse readTable(Long id);
-    ReservationTableResponse updateTable(Long id, ReservationTableRequest request);
-    void deleteTable(Long id);
+    ReservationTableResponse createReservationTable(ReservationTableRequest request);
+    ReservationTableResponse readReservationTable(Long id);
+    ReservationTableResponse updateReservationTable(Long id, ReservationTableRequest request);
+    void deleteReservationTable(Long id);
 }

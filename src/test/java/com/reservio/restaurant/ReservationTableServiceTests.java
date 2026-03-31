@@ -15,6 +15,7 @@ import com.reservio.restaurant.repository.ReservationTableRepository;
 import com.reservio.restaurant.repository.UserInfoRepository;
 import com.reservio.restaurant.service.reservationTable.ReservationTableService;
 import com.reservio.restaurant.service.userInfo.UserInfoService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 public class ReservationTableServiceTests {
@@ -57,7 +60,7 @@ public class ReservationTableServiceTests {
         Mockito.when(repository.save(entity)).thenReturn(entity);
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        ReservationTableResponse response = service.createTable(request);
+        ReservationTableResponse response = service.createReservationTable(request);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
@@ -69,7 +72,7 @@ public class ReservationTableServiceTests {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        ReservationTableResponse response = service.readTable(id);
+        ReservationTableResponse response = service.readReservationTable(id);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
@@ -82,10 +85,11 @@ public class ReservationTableServiceTests {
         Mockito.when(repository.save(entity)).thenReturn(entity);
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        ReservationTableResponse response = service.updateTable(id, request);
+        ReservationTableResponse response = service.updateReservationTable(id, request);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
+        Mockito.verify(mapper).updateEntity(request, entity);
         Mockito.verify(repository).save(entity);
     }
 
@@ -93,8 +97,32 @@ public class ReservationTableServiceTests {
     void deleteReservationTable() {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
 
-        service.deleteTable(id);
+        service.deleteReservationTable(id);
 
         Mockito.verify(repository).deleteById(id);
+    }
+
+    @Test
+    void getReservationTable_shouldThrowEntityNotFoundException_whenNotFound() {
+        Long id = 99L;
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.readReservationTable(id));
+    }
+
+    @Test
+    void updateReservationTable_shouldThrowEntityNotFoundException_whenNotFound() {
+        Long id = 99L;
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.updateReservationTable(id, request));
+    }
+
+    @Test
+    void deleteReservationTable_shouldThrowEntityNotFoundException_whenNotFound() {
+        Long id = 99L;
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.deleteReservationTable(id));
     }
 }

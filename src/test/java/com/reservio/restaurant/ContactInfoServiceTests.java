@@ -6,6 +6,7 @@ import com.reservio.restaurant.entity.ContactInfo;
 import com.reservio.restaurant.mapper.ContactInfoMapper;
 import com.reservio.restaurant.repository.ContactInfoRepository;
 import com.reservio.restaurant.service.contactInfo.ContactInfoService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,64 +17,91 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @ExtendWith(MockitoExtension.class)
 public class ContactInfoServiceTests {
     @Mock
-    ContactInfoRepository contactInfoRepository;
+    ContactInfoRepository repository;
     @Mock
-    ContactInfoMapper contactInfoMapper;
+    ContactInfoMapper mapper;
     @InjectMocks
-    ContactInfoService contactInfoService;
+    ContactInfoService service;
 
     private final Long id = 1L;
-    private final ContactInfo contactInfo = new ContactInfo(1L, "123456789", "address");
+    private final ContactInfo entity = new ContactInfo(1L, "123456789", "address");
     private final ContactInfoRequest request = new ContactInfoRequest("123456789", "address");
     private final ContactInfoResponse expectedResponse = new ContactInfoResponse(1L, "123456789", "address");
 
     @Test
     void createContactInfo() {
-        Mockito.when(contactInfoMapper.toEntity(request)).thenReturn(contactInfo);
-        Mockito.when(contactInfoRepository.save(contactInfo)).thenReturn(contactInfo);
-        Mockito.when(contactInfoMapper.toResponse(contactInfo)).thenReturn(expectedResponse);
+        Mockito.when(mapper.toEntity(request)).thenReturn(entity);
+        Mockito.when(repository.save(entity)).thenReturn(entity);
+        Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        ContactInfoResponse response = contactInfoService.createContactInfo(request);
+        ContactInfoResponse response = service.createContactInfo(request);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
-        Mockito.verify(contactInfoRepository).save(contactInfo);
+        Mockito.verify(repository).save(entity);
     }
 
     @Test
     void readContactInfo() {
-        Mockito.when(contactInfoRepository.findById(id)).thenReturn(Optional.of(contactInfo));
-        Mockito.when(contactInfoMapper.toResponse(contactInfo)).thenReturn(expectedResponse);
+        Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
+        Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        ContactInfoResponse response = contactInfoService.readContactInfo(id);
+        ContactInfoResponse response = service.readContactInfo(id);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
-        Mockito.verify(contactInfoRepository).findById(id);
+        Mockito.verify(repository).findById(id);
     }
 
     @Test
     void updateContactInfo() {
-        Mockito.when(contactInfoRepository.findById(id)).thenReturn(Optional.of(contactInfo));
-        Mockito.when(contactInfoRepository.save(contactInfo)).thenReturn(contactInfo);
-        Mockito.when(contactInfoMapper.toResponse(contactInfo)).thenReturn(expectedResponse);
+        Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
+        Mockito.when(repository.save(entity)).thenReturn(entity);
+        Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        ContactInfoResponse response = contactInfoService.updateContactInfo(id, request);
+        ContactInfoResponse response = service.updateContactInfo(id, request);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
-        Mockito.verify(contactInfoRepository).save(contactInfo);
+        Mockito.verify(mapper).updateEntity(request, entity);
+        Mockito.verify(repository).save(entity);
     }
 
     @Test
     void deleteContactInfo() {
-        Mockito.when(contactInfoRepository.findById(id)).thenReturn(Optional.of(contactInfo));
+        Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
 
-        contactInfoService.deleteContactInfo(id);
+        service.deleteContactInfo(id);
 
-        Mockito.verify(contactInfoRepository).deleteById(id);
+        Mockito.verify(repository).deleteById(id);
+    }
+
+    @Test
+    void getContactInfo_shouldThrowEntityNotFoundException_whenNotFound() {
+        Long id = 99L;
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.readContactInfo(id));
+    }
+
+    @Test
+    void updateContactInfo_shouldThrowEntityNotFoundException_whenNotFound() {
+        Long id = 99L;
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.updateContactInfo(id, request));
+    }
+
+    @Test
+    void deleteContactInfo_shouldThrowEntityNotFoundException_whenNotFound() {
+        Long id = 99L;
+        Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.deleteContactInfo(id));
     }
 }
