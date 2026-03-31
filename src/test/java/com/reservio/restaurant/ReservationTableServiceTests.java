@@ -52,7 +52,7 @@ public class ReservationTableServiceTests {
                             new ContactInfoResponse(id, "123456789", "address")));
 
     @Test
-    void createUserInfo() {
+    void createReservationTable() {
         Mockito.when(mapper.toEntity(request)).thenReturn(entity);
         Mockito.when(repository.save(entity)).thenReturn(entity);
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
@@ -65,7 +65,7 @@ public class ReservationTableServiceTests {
     }
 
     @Test
-    void readUserInfo() {
+    void readReservationTable() {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
@@ -77,7 +77,7 @@ public class ReservationTableServiceTests {
     }
 
     @Test
-    void updateContactInfo() {
+    void updateReservationTable() {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
         Mockito.when(repository.save(entity)).thenReturn(entity);
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
@@ -90,7 +90,7 @@ public class ReservationTableServiceTests {
     }
 
     @Test
-    void deleteContactInfo() {
+    void deleteReservationTable() {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
 
         service.deleteTable(id);

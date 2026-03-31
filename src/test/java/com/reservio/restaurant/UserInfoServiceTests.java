@@ -62,7 +62,7 @@ public class UserInfoServiceTests {
     }
 
     @Test
-    void updateContactInfo() {
+    void updateUserInfo() {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
         Mockito.when(repository.save(entity)).thenReturn(entity);
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
@@ -75,7 +75,7 @@ public class UserInfoServiceTests {
     }
 
     @Test
-    void deleteContactInfo() {
+    void deleteUserInfo() {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
 
         service.deleteUserInfo(id);

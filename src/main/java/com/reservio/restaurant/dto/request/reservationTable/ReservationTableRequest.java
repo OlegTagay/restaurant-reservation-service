@@ -17,7 +17,6 @@ public record ReservationTableRequest(
         Boolean isAvailable,
         @FutureOrPresent
         LocalDate reservationDate,
-        @FutureOrPresent
         LocalTime reservationTime,
         @NotNull
         UserInfoRequest userInfoRequest

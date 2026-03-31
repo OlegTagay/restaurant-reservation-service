@@ -8,6 +8,7 @@ import com.reservio.restaurant.repository.UserInfoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -20,6 +21,7 @@ public class UserInfoService implements IUserInfoService {
         this.userInfoMapper = userInfoMapper;
     }
 
+    @Transactional
     @Override
     public UserInfoResponse createUserInfo(UserInfoRequest request) {
         log.info("Creating entity: {}", request);
@@ -29,6 +31,7 @@ public class UserInfoService implements IUserInfoService {
         return userInfoMapper.toResponse(userInfo);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserInfoResponse readUserInfo(Long id) {
         log.info("Reading entity id: {}", id);
@@ -37,6 +40,7 @@ public class UserInfoService implements IUserInfoService {
         return userInfoMapper.toResponse(userInfo);
     }
 
+    @Transactional
     @Override
     public UserInfoResponse updateUserInfo(Long id, UserInfoRequest request) {
         log.info("Updating entity: {}", request);
@@ -48,6 +52,7 @@ public class UserInfoService implements IUserInfoService {
         return userInfoMapper.toResponse(userInfo);
     }
 
+    @Transactional
     @Override
     public void deleteUserInfo(Long id) {
         log.info("Deleting entity id: {}", id);

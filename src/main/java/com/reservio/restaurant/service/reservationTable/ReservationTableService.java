@@ -9,8 +9,10 @@ import com.reservio.restaurant.repository.ReservationTableRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@Transactional
 @Service
 public class ReservationTableService implements IReservationTableService {
     private final ReservationTableRepository reservationTableRepository;
@@ -21,6 +23,7 @@ public class ReservationTableService implements IReservationTableService {
         this.reservationTableMapper = reservationTableMapper;
     }
 
+    @Transactional
     @Override
     public ReservationTableResponse createTable(ReservationTableRequest request) {
         log.info("Creating entity: {}", request);
@@ -30,6 +33,7 @@ public class ReservationTableService implements IReservationTableService {
         return reservationTableMapper.toResponse(reservationTable);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ReservationTableResponse readTable(Long id) {
         log.info("Reading entity id: {}", id);
@@ -38,6 +42,7 @@ public class ReservationTableService implements IReservationTableService {
         return reservationTableMapper.toResponse(reservationTable);
     }
 
+    @Transactional
     @Override
     public ReservationTableResponse updateTable(Long id, ReservationTableRequest request) {
         log.info("Updating entity: {}", request);
@@ -49,6 +54,7 @@ public class ReservationTableService implements IReservationTableService {
         return reservationTableMapper.toResponse(reservationTable);
     }
 
+    @Transactional
     @Override
     public void deleteTable(Long id) {
         log.info("Deleting entity id: {}", id);
