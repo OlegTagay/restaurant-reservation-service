@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = UserInfoMapper.class)
 public interface ReservationTableMapper {
     @Mapping(target = "userInfoResponse", source = "userInfo")
@@ -19,4 +21,10 @@ public interface ReservationTableMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "userInfo", source = "userInfoRequest")
     void updateEntity(ReservationTableRequest request, @MappingTarget ReservationTable entity);
+
+    @Mapping(target = "userInfoResponse", source = "userInfo")
+    List<ReservationTableResponse> toResponse(List<ReservationTable> entities);
+
+    @Mapping(target = "userInfoRequest", source = "userInfoResponse")
+    ReservationTableRequest toRequest(ReservationTableResponse response);
 }

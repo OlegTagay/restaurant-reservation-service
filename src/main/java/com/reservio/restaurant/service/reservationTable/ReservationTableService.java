@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Transactional
 @Service
@@ -42,6 +44,17 @@ public class ReservationTableService implements IReservationTableService {
         return reservationTableMapper.toResponse(reservationTable);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<ReservationTableResponse> readReservationTables() {
+        List<ReservationTable> reservationTables = getReservationTables();
+        if(reservationTables.isEmpty()) {
+            throw new EntityNotFoundException("ReservationTable table is empty");
+        }
+
+        return reservationTableMapper.toResponse(reservationTables);
+    }
+
     @Transactional
     @Override
     public ReservationTableResponse updateReservationTable(Long id, ReservationTableRequest request) {
@@ -67,5 +80,9 @@ public class ReservationTableService implements IReservationTableService {
         return reservationTableRepository.findById(id)
                 .orElseThrow(() ->
                         new EntityNotFoundException("ReservationTable not found with id: " + id));
+    }
+
+    private List<ReservationTable> getReservationTables() {
+        return reservationTableRepository.findAll();
     }
 }

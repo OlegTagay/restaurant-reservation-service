@@ -26,6 +26,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,7 +44,7 @@ public class ReservationTableServiceTests {
     private final Long id = 1L;
     private final Integer numberOfSeats = 2;
     private final ReservationTableRequest request =
-            new ReservationTableRequest(numberOfSeats, false, LocalDate.now(), LocalTime.now(),
+            new ReservationTableRequest(numberOfSeats, LocalDate.now(), LocalTime.now(),
                     new UserInfoRequest("John", "Doe",
                             new ContactInfoRequest("123456789", "address")));
     private final ReservationTable entity =

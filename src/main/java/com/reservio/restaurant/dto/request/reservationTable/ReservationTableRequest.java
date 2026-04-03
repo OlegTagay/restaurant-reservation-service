@@ -11,10 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public record ReservationTableRequest(
-        @Min(value = 2, message = "Minimum seat number is 2")
-        @Max(value = 26, message = "Maximum seat number is 25")
         Integer numberOfSeats,
-        Boolean isAvailable,
         @FutureOrPresent
         LocalDate reservationDate,
         LocalTime reservationTime,

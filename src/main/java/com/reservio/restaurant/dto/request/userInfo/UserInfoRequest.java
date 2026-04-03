@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record UserInfoRequest(
-        @NotBlank(message = "First name is required") String firstName,
+        @NotBlank(message = "First name is required")
+        String firstName,
         String lastName,
-        @NotNull ContactInfoRequest contactInfoRequest
+        @NotNull
+        ContactInfoRequest contactInfoRequest
 ) {
 }
