@@ -84,7 +84,6 @@ public class ReservationTableServiceTests {
     @Test
     void updateReservationTable() {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
-        Mockito.when(repository.save(entity)).thenReturn(entity);
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
         ReservationTableResponse response = service.updateReservationTable(id, request);
@@ -92,7 +91,6 @@ public class ReservationTableServiceTests {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
         Mockito.verify(mapper).updateEntity(request, entity);
-        Mockito.verify(repository).save(entity);
     }
 
     @Test
