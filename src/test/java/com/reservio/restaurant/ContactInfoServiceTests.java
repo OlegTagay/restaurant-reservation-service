@@ -1,11 +1,11 @@
 package com.reservio.restaurant;
 
-import com.reservio.restaurant.dto.request.contactInfo.ContactInfoRequest;
-import com.reservio.restaurant.dto.response.contactInfo.ContactInfoResponse;
-import com.reservio.restaurant.entity.ContactInfo;
-import com.reservio.restaurant.mapper.ContactInfoMapper;
-import com.reservio.restaurant.repository.ContactInfoRepository;
-import com.reservio.restaurant.service.contactInfo.ContactInfoService;
+import com.reservio.restaurant.contact.ContactInfoRequest;
+import com.reservio.restaurant.contact.ContactInfoResponse;
+import com.reservio.restaurant.contact.ContactInfo;
+import com.reservio.restaurant.contact.ContactInfoMapper;
+import com.reservio.restaurant.contact.ContactInfoRepository;
+import com.reservio.restaurant.contact.ContactInfoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

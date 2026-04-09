@@ -1,20 +1,17 @@
 package com.reservio.restaurant;
 
-import com.reservio.restaurant.dto.request.contactInfo.ContactInfoRequest;
-import com.reservio.restaurant.dto.request.reservationTable.ReservationTableRequest;
-import com.reservio.restaurant.dto.request.userInfo.UserInfoRequest;
-import com.reservio.restaurant.dto.response.contactInfo.ContactInfoResponse;
-import com.reservio.restaurant.dto.response.reservationTable.ReservationTableResponse;
-import com.reservio.restaurant.dto.response.userInfo.UserInfoResponse;
-import com.reservio.restaurant.entity.ContactInfo;
-import com.reservio.restaurant.entity.ReservationTable;
-import com.reservio.restaurant.entity.UserInfo;
-import com.reservio.restaurant.mapper.ReservationTableMapper;
-import com.reservio.restaurant.mapper.UserInfoMapper;
-import com.reservio.restaurant.repository.ReservationTableRepository;
-import com.reservio.restaurant.repository.UserInfoRepository;
-import com.reservio.restaurant.service.reservationTable.ReservationTableService;
-import com.reservio.restaurant.service.userInfo.UserInfoService;
+import com.reservio.restaurant.contact.ContactInfoRequest;
+import com.reservio.restaurant.reservation.userRole.ReservationTableRequest;
+import com.reservio.restaurant.user.UserInfoRequest;
+import com.reservio.restaurant.contact.ContactInfoResponse;
+import com.reservio.restaurant.reservation.userRole.ReservationTableResponse;
+import com.reservio.restaurant.user.UserInfoResponse;
+import com.reservio.restaurant.contact.ContactInfo;
+import com.reservio.restaurant.reservation.shared.ReservationTable;
+import com.reservio.restaurant.user.UserInfo;
+import com.reservio.restaurant.reservation.shared.ReservationTableMapper;
+import com.reservio.restaurant.reservation.shared.ReservationTableRepository;
+import com.reservio.restaurant.reservation.userRole.ReservationTableService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,8 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
