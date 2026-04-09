@@ -70,8 +70,9 @@ public class BookingService implements IBookingService {
                 .readReservationTables()
                 .stream()
                 .filter(response ->
-                        response.reservationDate() == null
-                                || !response.reservationDate().isEqual(request.reservationDate()))
+                        request.numberOfSeats() <= response.numberOfSeats() &&
+                                (response.reservationDate() == null
+                                || !response.reservationDate().isEqual(request.reservationDate())))
                 .sorted(Comparator.comparing(ReservationTableResponse::numberOfSeats))
                 .toList();
 
