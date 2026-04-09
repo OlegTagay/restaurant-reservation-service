@@ -1,6 +1,7 @@
 package com.reservio.restaurant;
 
 import com.reservio.restaurant.contact.ContactInfoRequest;
+import com.reservio.restaurant.reservation.adminRole.ReservationTableAdminService;
 import com.reservio.restaurant.reservation.userRole.ReservationTableRequest;
 import com.reservio.restaurant.user.UserInfoRequest;
 import com.reservio.restaurant.contact.ContactInfoResponse;
@@ -35,6 +36,8 @@ public class ReservationTableServiceTests {
     ReservationTableMapper mapper;
     @InjectMocks
     ReservationTableService service;
+    @InjectMocks
+    ReservationTableAdminService adminService;
 
     private final Long id = 1L;
     private final Integer numberOfSeats = 2;
@@ -43,11 +46,11 @@ public class ReservationTableServiceTests {
                     new UserInfoRequest("John", "Doe",
                             new ContactInfoRequest("123456789", "address")));
     private final ReservationTable entity =
-            new ReservationTable(id, numberOfSeats, false, LocalDate.now(), LocalTime.now(),
+            new ReservationTable(id, numberOfSeats, LocalDate.now(), LocalTime.now(),
                     new UserInfo(id, "John", "Doe",
                             new ContactInfo(id, "123456789", "address")));
     private final ReservationTableResponse expectedResponse =
-            new ReservationTableResponse(id, numberOfSeats, false, LocalDate.now(), LocalTime.now(),
+            new ReservationTableResponse(id, numberOfSeats, LocalDate.now(), LocalTime.now(),
                     new UserInfoResponse(id, "John", "Doe",
                             new ContactInfoResponse(id, "123456789", "address")));
 
@@ -57,7 +60,7 @@ public class ReservationTableServiceTests {
         Mockito.when(repository.save(entity)).thenReturn(entity);
         Mockito.when(mapper.toResponse(entity)).thenReturn(expectedResponse);
 
-        ReservationTableResponse response = service.createReservationTable(request);
+        ReservationTableResponse response = adminService.createReservationTable(request);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(expectedResponse.id(), response.id());
@@ -92,7 +95,7 @@ public class ReservationTableServiceTests {
     void deleteReservationTable() {
         Mockito.when(repository.findById(id)).thenReturn(Optional.of(entity));
 
-        service.deleteReservationTable(id);
+        adminService.deleteReservationTable(id);
 
         Mockito.verify(repository).deleteById(id);
     }
@@ -118,6 +121,6 @@ public class ReservationTableServiceTests {
         Long id = 99L;
         Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> service.deleteReservationTable(id));
+        assertThrows(EntityNotFoundException.class, () -> adminService.deleteReservationTable(id));
     }
 }

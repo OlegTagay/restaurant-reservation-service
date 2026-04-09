@@ -3,17 +3,18 @@ package com.reservio.restaurant.booking;
 import com.reservio.restaurant.contact.ContactInfoRequest;
 import com.reservio.restaurant.contact.ContactInfoResponse;
 import com.reservio.restaurant.exception.NoSeatsAvailableException;
-import com.reservio.restaurant.reservation.shared.ReservationTableMapper;
 import com.reservio.restaurant.reservation.userRole.IReservationTableService;
 import com.reservio.restaurant.reservation.userRole.ReservationTableRequest;
 import com.reservio.restaurant.reservation.userRole.ReservationTableResponse;
-import com.reservio.restaurant.reservation.userRole.ReservationTableService;
-import com.reservio.restaurant.user.IUserInfoService;
 import com.reservio.restaurant.user.UserInfoRequest;
 import com.reservio.restaurant.user.UserInfoResponse;
-import com.reservio.restaurant.user.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,22 +33,16 @@ public class BookingService implements IBookingService {
     @Override
     public ReservationTableResponse reserveTable(ReservationTableRequest reservationTableRequest) {
         log.info("Processing request: {}", reservationTableRequest);
-        ReservationTableResponse response =
-                reservationTableService
-                        .readReservationTables()
-                        .stream()
-                        .filter(reservationTableResponse -> reservationTableResponse.isAvailable()
-                                && reservationTableRequest.numberOfSeats() <= reservationTableResponse.numberOfSeats()
-                                && reservationTableRequest.numberOfSeats() >= reservationTableResponse.numberOfSeats()
-                                && (reservationTableResponse.reservationDate() == null)
-                                && (reservationTableResponse.reservationTime() == null))
-                        .findFirst()
-                        .orElseThrow(() -> new NoSeatsAvailableException("No seats available!"));
+        ReservationTableResponse response = findMostSuitedTable(reservationTableRequest);
 
-        ReservationTableResponse finalResponse =
-                reservationTableService.updateReservationTable(response.id(), reservationTableRequest);
+        ReservationTableRequest request = new ReservationTableRequest(
+                response.numberOfSeats(),
+                reservationTableRequest.reservationDate(),
+                reservationTableRequest.reservationTime(),
+                reservationTableRequest.userInfoRequest()
+        );
 
-        return finalResponse;
+        return reservationTableService.updateReservationTable(response.id(), request);
     }
 
     @Override
@@ -68,5 +63,22 @@ public class BookingService implements IBookingService {
     @Override
     public void cancelTable(Long id) {
         reservationTableService.cancelReservation(id);
+    }
+
+    private ReservationTableResponse findMostSuitedTable(ReservationTableRequest request) {
+        List<ReservationTableResponse> list = reservationTableService
+                .readReservationTables()
+                .stream()
+                .filter(response ->
+                        response.reservationDate() == null
+                                || !response.reservationDate().isEqual(request.reservationDate()))
+                .sorted(Comparator.comparing(ReservationTableResponse::numberOfSeats))
+                .toList();
+
+        for (ReservationTableResponse response : list) {
+            return response;
+        }
+
+        throw new NoSeatsAvailableException("No seats available!");
     }
 }

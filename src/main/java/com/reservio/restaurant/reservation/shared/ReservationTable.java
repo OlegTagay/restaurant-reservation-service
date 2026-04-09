@@ -18,7 +18,6 @@ public class ReservationTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer numberOfSeats;
-    private Boolean isAvailable;
     private LocalDate reservationDate;
     private LocalTime reservationTime;
     @ManyToOne(cascade = CascadeType.ALL)

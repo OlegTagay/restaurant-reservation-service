@@ -19,4 +19,10 @@ public class GlobalExceptionHandler {
                 .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
         return errors;
     }
+
+    @ExceptionHandler(NoSeatsAvailableException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Map<String, String> handleNoSeatsAvailable(NoSeatsAvailableException ex) {
+        return Map.of("error", ex.getMessage());
+    }
 }
