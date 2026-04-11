@@ -1,5 +1,6 @@
 package com.reservio.restaurant.exception;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSeatsAvailableException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handleNoSeatsAvailable(NoSeatsAvailableException ex) {
+        return Map.of("error", ex.getMessage());
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleUserNotFound(EntityNotFoundException ex) {
         return Map.of("error", ex.getMessage());
     }
 }
