@@ -10,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ContactInfoService implements IContactInfoService {
     private final ContactInfoRepository contactInfoRepository;
     private final ContactInfoMapper contactInfoMapper;
+    private final ContactInfoFinder contactInfoFinder;
 
-    public ContactInfoService(ContactInfoRepository contactInfoRepository, ContactInfoMapper contactInfoMapper) {
+    public ContactInfoService(ContactInfoRepository contactInfoRepository, ContactInfoMapper contactInfoMapper, ContactInfoFinder contactInfoFinder) {
         this.contactInfoRepository = contactInfoRepository;
         this.contactInfoMapper = contactInfoMapper;
+        this.contactInfoFinder = contactInfoFinder;
     }
 
     @Transactional
@@ -29,13 +31,13 @@ public class ContactInfoService implements IContactInfoService {
     public ContactInfoResponse readContactInfo(Long id) {
         log.info("Reading entity id: {}", id);
 
-        return contactInfoMapper.toResponse(getContactInfo(id));
+        return contactInfoMapper.toResponse(contactInfoFinder.getContactInfo(id));
     }
 
     @Transactional
     public ContactInfoResponse updateContactInfo(Long id, ContactInfoRequest request) {
         log.info("Updating entity: {}", request);
-        ContactInfo contactInfo = getContactInfo(id);
+        ContactInfo contactInfo = contactInfoFinder.getContactInfo(id);
 
         contactInfoMapper.updateEntity(request, contactInfo);
         contactInfoRepository.save(contactInfo);
@@ -46,14 +48,8 @@ public class ContactInfoService implements IContactInfoService {
     @Transactional
     public void deleteContactInfo(Long id) {
         log.info("Deleting entity id: {}", id);
-        getContactInfo(id);
+        contactInfoFinder.getContactInfo(id);
 
         contactInfoRepository.deleteById(id);
-    }
-
-    private ContactInfo getContactInfo(Long id) {
-        return contactInfoRepository.findById(id)
-                .orElseThrow(() ->
-                        new EntityNotFoundException("ContactInfo not found with id: " + id));
     }
 }

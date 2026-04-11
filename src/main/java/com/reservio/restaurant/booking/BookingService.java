@@ -72,14 +72,12 @@ public class BookingService implements IBookingService {
                 .filter(response ->
                         request.numberOfSeats() <= response.numberOfSeats() &&
                                 (response.reservationDate() == null
-                                || !response.reservationDate().isEqual(request.reservationDate())))
+                                        || !response.reservationDate().isEqual(request.reservationDate())))
                 .sorted(Comparator.comparing(ReservationTableResponse::numberOfSeats))
                 .toList();
 
-        for (ReservationTableResponse response : list) {
-            return response;
-        }
-
-        throw new NoSeatsAvailableException("No seats available!");
+        return list.stream()
+                .findFirst()
+                .orElseThrow(() -> new NoSeatsAvailableException("No seats available!"));
     }
 }
