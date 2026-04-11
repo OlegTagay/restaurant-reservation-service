@@ -14,15 +14,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/v1/reservation", produces = "application/json")
 public class ReservationTableController {
     private final IBookingService bookingService;
+    private final IReservationTableService reservationTableService;
 
-    public ReservationTableController(IBookingService bookingService) {
+    public ReservationTableController(IBookingService bookingService, IReservationTableService reservationTableService) {
         this.bookingService = bookingService;
+        this.reservationTableService = reservationTableService;
     }
 
     @GetMapping(path = "/{id}")
     public ReservationTableResponse readTable(@PathVariable Long id) {
         log.info("Reading request id: {}", id);
-        return bookingService.readTable(id);
+        return reservationTableService.readReservationTable(id);
     }
 
     @PostMapping(consumes = "application/json")
@@ -35,7 +37,7 @@ public class ReservationTableController {
     @PatchMapping(path = "/{id}", consumes = "application/json")
     public ReservationTableResponse updateTable(@PathVariable Long id, @Valid @RequestBody ReservationTableRequest request) {
         log.info("Updating request id: {}, with request: {}", id, request);
-        return bookingService.updateTable(id, request);
+        return reservationTableService.updateReservationTable(id, request);
     }
 
     @DeleteMapping(path = "/{id}")
